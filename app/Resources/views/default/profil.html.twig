@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="col-lg-12">
+        <h1>profil de {{ name }}</h1>
+    </div>
+    <div class="col-lg-12">
+        <h2>Liste des tweets</h2>
+        {% for tweet in tweets %}
+            <div class="panel panel-primary">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{ tweet['pseudo'] }}</a></h3>
+                </div>
+                <div class="panel-body">
+                    {{ tweet['contenu'] }}
+                </div>
+                <div class="panel-footer">
+                    <p>aimer ce tweet</p>
+                </div>
+            </div>
+        {% endfor %}
+
+    </div>
+{% endblock %}
