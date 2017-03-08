@@ -1,19 +1,25 @@
-{% extends 'base.html.twig' %}
+{% extends '::base.html.twig' %}
 
-{% block body %}
-    <div class="col-lg-12">
-        <h1>Bonjour, {{ name }}</h1>
-        <p>Nous sommes le {{ "now"| date("d/m/Y") }} et il est {{ "now" | date("G:i:s") }}</p>
+{% block title %}Accueil{% endblock %}
 
-    <ul>
-        {% for index, day in days %}
-            <li>{{ index }} : {{ day }}</li>
-        {% endfor %}
-    </ul>
+{% block header %}
+    <h1>Bonjour {{ name }}</h1>
+{% endblock %}
 
-    <p>{{ html }}</p>
-    <p>{{ html | replace({"n'est pas" : "est"}) | raw }}</p>
-        <div>
-        </div>
-    </div>
+{% block content %}
+    <p>Nous sommes le {{ "now"| date("d/m/Y") }} et il est {{ "now" | date("G:i:s") }}</p>
+
+<ul>
+    {% for index, day in days %}
+        <li>{{ index }} : {{ day }}</li>
+    {% endfor %}
+</ul>
+
+<p>{{ html }}</p>
+<p>{{ html | replace({"n'est pas" : "est"}) | raw }}</p>
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
+    - <a href="{{ path('app_twig_test') }}">Lien vers la page twig test</a>
 {% endblock %}
