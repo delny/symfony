@@ -10,4 +10,8 @@ namespace AppBundle\Repository;
  */
 class TweetRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function get_all_tweets()
+    {
+        return $this->findAll();
+    }
 }

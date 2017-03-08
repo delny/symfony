@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Tweet;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,30 +15,29 @@ class TweetController extends Controller
      */
     public function listAction(Request $request)
     {
-        // retourne les derniers tweets
-        return $this->render('tweet/list.html.twig', array(
-            'tweets' => array(
-                array('pseudo' => 'toto', 'contenu' =>'mon premier tweet'),
-                array('pseudo' => 'toto', 'contenu' =>'mon deuxieme tweet'),
-                array('pseudo' => 'supertoto', 'contenu' =>'je fais un tweet moi aussi'),
-            ),
+         //recupere les derniers tweets
+        $tweets = $this->getDoctrine()->getRepository(Tweet::class)->get_all_tweets();
+        //retour de la vue
+        return $this->render(':tweet:list.html.twig', array(
+            'tweets' => $tweets,
         ));
     }
     /**
-     * @Route("/new-tweet", name="app_tweet_new")
+     * @Route("/new-tweet", name="app_tweet_new", methods={"POST"})
      */
-    public function newtweetAction(Request $request)
+    public function newAction(Request $request)
     {
+        // si post bien reçu
         if (isset($_POST['message']))
         {
-            $reponse = 'message bien re&ccedil;';
+            $reponse = 'message bien re&ccedil;u';
         }
         else
         {
             $reponse = 'rien !';
         }
         // replace this example code with whatever you need
-        return $this->render('tweet/new.html.twig', array(
+        return $this->render(':tweet:new.html.twig', array(
             'reponse' => $reponse,
         ));
     }

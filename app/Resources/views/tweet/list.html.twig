@@ -10,14 +10,18 @@
 {% for tweet in tweets %}
     <div class="panel panel-primary">
         <div class="panel-heading">
-            <h3 class="panel-title">{{ tweet['pseudo'] }}</a></h3>
+            <h3 class="panel-title">Pseudo (plus tard)</h3>
         </div>
         <div class="panel-body">
-            {{ tweet['contenu'] }}
+            {{ tweet.message }}
         </div>
         <div class="panel-footer">
             <p>aimer ce tweet</p>
         </div>
+    </div>
+{% else %}
+    <div class="alert alert-warning">
+        Aucun tweet
     </div>
 {% endfor %}
 {% endblock %}
