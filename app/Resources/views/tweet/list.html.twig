@@ -1,13 +1,12 @@
 {% extends '::base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}Liste des tweets{% endblock %}
 
 {% block header %}
     <h1>Derniers tweets</h1>
 {% endblock %}
 
 {% block content %}
-    <p>Nous sommes le {{ "now"| date("d/m/Y") }} et il est {{ "now" | date("G:i:s") }}</p>
 {% for tweet in tweets %}
     <div class="panel panel-primary">
         <div class="panel-heading">
