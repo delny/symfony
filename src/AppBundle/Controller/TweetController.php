@@ -16,14 +16,16 @@ class TweetController extends Controller
     public function listAction(Request $request)
     {
          //recupere les derniers tweets
-        $tweets = $this->getDoctrine()->getRepository(Tweet::class)->get_all_tweets();
+        $tweets = $this->getDoctrine()->getRepository(Tweet::class)->getLastTweets(
+            $this->getParameter('app.tweet.nb_last')
+        );
         //retour de la vue
         return $this->render(':tweet:list.html.twig', array(
             'tweets' => $tweets,
         ));
     }
     /**
-     * @Route("/new-tweet", name="app_tweet_new", methods={"POST"})
+     * @Route("/new-tweet", name="app_tweet_new", methods={"GET","POST"})
      */
     public function newAction(Request $request)
     {

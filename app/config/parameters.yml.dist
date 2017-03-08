@@ -17,3 +17,6 @@ parameters:
 
     # A secret key that's used to generate certain security-related tokens
     secret:            ThisTokenIsNotSoSecretChangeIt
+
+    #parametre max nombres de tweets a afficher
+    app.tweet.nb_last : 10
