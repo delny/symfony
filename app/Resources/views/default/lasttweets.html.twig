@@ -1,0 +1,29 @@
+{% extends '::base.html.twig' %}
+
+{% block title %}Accueil{% endblock %}
+
+{% block header %}
+    <h1>Derniers tweets</h1>
+{% endblock %}
+
+{% block content %}
+    <p>Nous sommes le {{ "now"| date("d/m/Y") }} et il est {{ "now" | date("G:i:s") }}</p>
+{% for tweet in tweets %}
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">{{ tweet['pseudo'] }}</a></h3>
+        </div>
+        <div class="panel-body">
+            {{ tweet['contenu'] }}
+        </div>
+        <div class="panel-footer">
+            <p>aimer ce tweet</p>
+        </div>
+    </div>
+{% endfor %}
+{% endblock %}
+
+{% block footer %}
+    {{ parent() }}
+    - <a href="{{ path('app_twig_test') }}">Lien vers la page twig test</a>
+{% endblock %}

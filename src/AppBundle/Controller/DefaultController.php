@@ -6,7 +6,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-// recuperation du modele
 
 class DefaultController extends Controller
 {
@@ -33,13 +32,12 @@ class DefaultController extends Controller
         ));
     }
     /**
-     * @Route("/profil", name="pageprofil")
+     * @Route("/lasttweets", name="dernierstweets")
      */
-    public function profilAction(Request $request)
+    public function lasttweetsAction(Request $request)
     {
         // replace this example code with whatever you need
-        return $this->render('default/profil.html.twig', array(
-            'name' => 'john',
+        return $this->render('default/lasttweets.html.twig', array(
             'tweets' => array(
                 array('pseudo' => 'toto', 'contenu' =>'mon premier tweet'),
                 array('pseudo' => 'toto', 'contenu' =>'mon deuxieme tweet'),
