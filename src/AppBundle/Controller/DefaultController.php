@@ -32,8 +32,8 @@ class DefaultController extends Controller
         ));
     }
     /**
-     * @Route("/lasttweets", name="dernierstweets")
-     */
+ * @Route("/lasttweets", name="dernierstweets")
+ */
     public function lasttweetsAction(Request $request)
     {
         // replace this example code with whatever you need
@@ -43,6 +43,24 @@ class DefaultController extends Controller
                 array('pseudo' => 'toto', 'contenu' =>'mon deuxieme tweet'),
                 array('pseudo' => 'supertoto', 'contenu' =>'je fais un tweet moi aussi'),
             ),
+        ));
+    }
+    /**
+     * @Route("/new-tweet", name="nouveautweet")
+     */
+    public function newtweetAction(Request $request)
+    {
+        if (isset($_POST['message']))
+        {
+            $reponse = 'message bien re&ccedil;';
+        }
+        else
+        {
+            $reponse = 'rien !';
+        }
+        // replace this example code with whatever you need
+        return $this->render('default/newtweet.html.twig', array(
+            'reponse' => $reponse,
         ));
     }
 }
