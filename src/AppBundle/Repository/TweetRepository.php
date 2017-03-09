@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Entity\Tweet;
 
 /**
  * TweetRepository
@@ -17,10 +18,33 @@ class TweetRepository extends \Doctrine\ORM\EntityRepository
     public function getLastTweets($maxresults)
     {
         return $this->createQueryBuilder('t')
-            ->select('t.message')
+            ->select('t.message,t.id,t.createdAt')
             ->orderBy('t.createdAt','DESC')
             ->setMaxResults($maxresults)
             ->getQuery()
             ->getResult();
+    }
+
+    /**
+     * @param $idTweet
+     * @return mixed
+     */
+    public function getTweetById($idTweet)
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.message,t.id,t.createdAt')
+            ->where('t.id = :id')
+            ->setParameter(':id',$idTweet)
+            ->getQuery()
+            ->getSingleResult();
+    }
+
+    /**
+     * @param Tweet $tweet
+     * @return bool
+     */
+    public function addtweet(Tweet $tweet)
+    {
+        return FALSE;
     }
 }

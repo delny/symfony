@@ -3,11 +3,11 @@
 {% block title %}Liste des tweets{% endblock %}
 
 {% block header %}
-    <h1>Derniers tweets</h1>
+    <h1>D&eacute;tail d'un tweet</h1>
 {% endblock %}
 
 {% block content %}
-{% for tweet in tweets %}
+{% if tweet %}
     <div class="panel panel-primary">
         <div class="panel-heading">
             <h3 class="panel-title">Pseudo (plus tard)</h3>
@@ -16,14 +16,14 @@
             {{ tweet.message }}
         </div>
         <div class="panel-footer">
-            <p><a href="{{ path('app_tweet_view',{'id': tweet.id}) }}">voir ce tweet</a></p>
+            <p>aimer ce tweet</p>
         </div>
     </div>
 {% else %}
     <div class="alert alert-warning">
         Aucun tweet
     </div>
-{% endfor %}
+{% endif %}
 {% endblock %}
 
 {% block footer %}

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Tweet;
+use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,6 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 class TweetController extends Controller
 {
+    //$request = $this->get('request');
+    //$request->request->get('bar');
+    //$session = $request->getSession();
     /**
      * @Route("/", name="app_tweet_list")
      */
@@ -24,15 +28,42 @@ class TweetController extends Controller
             'tweets' => $tweets,
         ));
     }
+
+    /**
+     * @Route("/tweet/{id}", name="app_tweet_view")
+     */
+    public function viewAction(Request $request,$id)
+    {
+        //on recupere le tweet correspondant
+        $tweet = $this->getDoctrine()->getRepository(Tweet::class)->getTweetById($id);
+        if ($tweet)
+        {
+            //retour de la vue
+            return $this->render(':tweet:view.html.twig',array(
+                'tweet' => $tweet,
+            ));
+        }
+        else
+        {
+            throw new \Exception('Tweet introuvable !');
+        }
+
+    }
     /**
      * @Route("/new-tweet", name="app_tweet_new", methods={"GET","POST"})
      */
     public function newAction(Request $request)
     {
+        $message = $request->request->get('message');
         // si post bien reçu
-        if (isset($_POST['message']))
+        if (isset($message))
         {
-            $reponse = 'message bien re&ccedil;u';
+            $reponse = 'message vaut :'.$message;
+
+            //ajout du tweet à la bdd
+            $tweet = new Tweet();
+            $tweet->setMessage($message);
+            $this->getDoctrine()->getRepository(Tweet::class)->addtweet($tweet);
         }
         else
         {
