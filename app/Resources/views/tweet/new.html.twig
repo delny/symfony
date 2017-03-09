@@ -13,8 +13,17 @@
     {# Les erreurs générales du formulaire. #}
     {{ form_errors(form) }}
 
-    {# Génération du label + error + widget pour un champ. #}
-    {{ form_row(form.message) }}
+    {# Génération manuelle et éclatée : #}
+    <div class="form-group">
+        {# Génération du label. #}
+        {{ form_label(form.message, "message") }}
+
+        {# Affichage des erreurs pour ce champ précis. #}
+        {{ form_errors(form.message) }}
+
+        {# Génération de l'input. #}
+        {{ form_widget(form.message, {'attr': {'placeholder': 'entrez un message'}}) }}
+    </div>
 
     {# Génération automatique des champs pas encore écrits.
      Dans cet exemple, ce serait le champ CSRF (géré automatiquement par Symfony !)
