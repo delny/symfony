@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator as Assert;
 
 /**
  * Tweet
@@ -32,6 +33,8 @@ class Tweet
      * @var \DateTime
      *
      * @ORM\Column(name="created_at", type="datetime")
+     *
+     * @Assert\Constraints\NotBlank()
      */
     private $createdAt;
 

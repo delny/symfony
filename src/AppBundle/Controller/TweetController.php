@@ -3,12 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Tweet;
-use Doctrine\ORM\EntityManager;
+use AppBundle\Form\TweetType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TweetController extends Controller
@@ -27,22 +25,20 @@ class TweetController extends Controller
             'tweets' => $tweets,
         ));
     }
-
     /**
      * @Route("/tweet/{id}", name="app_tweet_view")
      */
-    public function viewAction(Request $request,$id)
+    public function viewAction($id)
     {
         if(!$id OR (intval($id)==0))
         {
             throw new NotFoundHttpException('Id tweet incorrect !!');
         }
-
         //on recupere le tweet correspondant
         $tweet = $this->getDoctrine()->getRepository(Tweet::class)->getTweetById($id);
         if (!$tweet)
         {
-            throw new NotFoundHttpException('Tweet introuvable !');
+            throw new NotFoundHttpException(sprintf('Tweet numero "%d" introuvable !',$id));
         }
 
         //retour de la vue
@@ -56,28 +52,30 @@ class TweetController extends Controller
      */
     public function newAction(Request $request)
     {
-        $message = $request->request->get('message');
-        // si post bien reçu
-        if (isset($message))
+        //on instancie le tweet
+        $tweet = new Tweet();
+
+        //on construit le formulaire
+        $form = $this->createForm(TweetType::class, $tweet);
+
+        $form->handleRequest($request);
+        if ($form->isSubmitted() AND $form->isValid() )
         {
-            $reponse = 'message vaut :'.$message;
+            //formulaire valide
 
             //manager
-            $manager = $this->getDoctrine()->getRepository(Tweet::class)->getEntityManager();
+            $manager = $this->getDoctrine()->getManager();
 
             //ajout du tweet à la bdd
-            $tweet = new Tweet();
-            $tweet->setMessage($message);
             $manager->persist($tweet);
             $manager->flush();
+
+            //retourne vers detail tweet
+            return $this->redirectToRoute('app_tweet_view',['id'=> $tweet->getId()]);
         }
-        else
-        {
-            $reponse = 'rien !';
-        }
-        // replace this example code with whatever you need
+
         return $this->render(':tweet:new.html.twig', array(
-            'reponse' => $reponse,
+            'form' => $form->createView(),
         ));
     }
 }
