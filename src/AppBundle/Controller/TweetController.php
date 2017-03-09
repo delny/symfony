@@ -6,14 +6,13 @@ use AppBundle\Entity\Tweet;
 use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TweetController extends Controller
 {
-    //$request = $this->get('request');
-    //$request->request->get('bar');
-    //$session = $request->getSession();
     /**
      * @Route("/", name="app_tweet_list")
      */
@@ -34,19 +33,22 @@ class TweetController extends Controller
      */
     public function viewAction(Request $request,$id)
     {
+        if(!$id OR (intval($id)==0))
+        {
+            throw new NotFoundHttpException('Id tweet incorrect !!');
+        }
+
         //on recupere le tweet correspondant
         $tweet = $this->getDoctrine()->getRepository(Tweet::class)->getTweetById($id);
-        if ($tweet)
+        if (!$tweet)
         {
-            //retour de la vue
-            return $this->render(':tweet:view.html.twig',array(
-                'tweet' => $tweet,
-            ));
+            throw new NotFoundHttpException('Tweet introuvable !');
         }
-        else
-        {
-            throw new \Exception('Tweet introuvable !');
-        }
+
+        //retour de la vue
+        return $this->render(':tweet:view.html.twig',array(
+            'tweet' => $tweet,
+        ));
 
     }
     /**
@@ -60,10 +62,14 @@ class TweetController extends Controller
         {
             $reponse = 'message vaut :'.$message;
 
+            //manager
+            $manager = $this->getDoctrine()->getRepository(Tweet::class)->getEntityManager();
+
             //ajout du tweet à la bdd
             $tweet = new Tweet();
             $tweet->setMessage($message);
-            $this->getDoctrine()->getRepository(Tweet::class)->addtweet($tweet);
+            $manager->persist($tweet);
+            $manager->flush();
         }
         else
         {
