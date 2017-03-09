@@ -70,6 +70,12 @@ class TweetController extends Controller
             $manager->persist($tweet);
             $manager->flush();
 
+            //message de notification
+            $this->addFlash(
+                'success',
+                'Votre tweet a bien été envoyé !'
+            );
+
             //retourne vers detail tweet
             return $this->redirectToRoute('app_tweet_view',['id'=> $tweet->getId()]);
         }

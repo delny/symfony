@@ -19,7 +19,11 @@
         {{ form_label(form.message, "message") }}
 
         {# Affichage des erreurs pour ce champ précis. #}
-        {{ form_errors(form.message) }}
+            {% if form_errors(form.message) %}
+                <div class="alert alert-danger">
+                    {{ form_errors(form.message) }}
+                </div>
+            {% endif %}
 
         {# Génération de l'input. #}
         {{ form_widget(form.message, {'attr': {'placeholder': 'entrez un message'}}) }}
