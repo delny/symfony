@@ -47,9 +47,8 @@ class Tweet
      */
     private $createdAt;
 
-
     /**
-     * Constructeur
+     * Tweet constructor.
      */
     public function __construct()
     {

@@ -76,12 +76,12 @@ class TweetController extends Controller
                 'Votre tweet a bien été envoyé !'
             );
 
-            //on appel emailmessenger
+            //on instancie emailmessenger via un service
             $emailMessenger = $this->container->get('app.email_messenger');
             //on envoie un mail
             $emailMessenger->sendTweetCreated($tweet);
 
-            //retourne vers detail tweet
+            //renvoie vers la page de detail du tweet nouvellement crée
             return $this->redirectToRoute('app_tweet_view',['id'=> $tweet->getId()]);
         }
 

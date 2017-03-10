@@ -2,6 +2,7 @@
 // src/AppBundle/Manager/TweetManager.php
 namespace AppBundle\Manager;
 use AppBundle\Entity\Tweet;
+use Doctrine\ORM\EntityManagerInterface;
 
 class TweetManager {
 
@@ -13,7 +14,7 @@ class TweetManager {
      * @param $manager
      * @param $nb_last_tweet
      */
-    public function __construct($manager, $nbLastTweet)
+    public function __construct(EntityManagerInterface $manager, $nbLastTweet)
     {
         $this->manager = $manager;
         $this->nbLastTweet = $nbLastTweet;
@@ -32,7 +33,10 @@ class TweetManager {
      */
     public function save(Tweet $tweet)
     {
-        $this->manager->persist($tweet);
+        if ($tweet->getId() === null)
+        {
+            $this->manager->persist($tweet);
+        }
         $this->manager->flush($tweet);
     }
 
@@ -41,6 +45,6 @@ class TweetManager {
      */
     public function getLast()
     {
-        return $this->manager->getRepository(Tweet::class)->getLastTweets($this->nbLastTweet);
+        return $this->manager->getRepository(Tweet::class)->getLastTweets($this ->nbLastTweet);
     }
 }
