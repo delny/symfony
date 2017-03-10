@@ -16,10 +16,12 @@ class TweetController extends Controller
      */
     public function listAction(Request $request)
     {
+        //on cree instance de tweetmanager
+        $tweetmanager = $this->container->get('app.tweet_manager');
+
          //recupere les derniers tweets
-        $tweets = $this->getDoctrine()->getRepository(Tweet::class)->getLastTweets(
-            $this->getParameter('app.tweet.nb_last')
-        );
+        $tweets = $tweetmanager->getLast();
+
         //retour de la vue
         return $this->render(':tweet:list.html.twig', array(
             'tweets' => $tweets,
@@ -52,29 +54,32 @@ class TweetController extends Controller
      */
     public function newAction(Request $request)
     {
-        //on instancie le tweet
-        $tweet = new Tweet();
+        //appel du tweetmanager
+        $tweetmanager = $this->container->get('app.tweet_manager');
+        //on creer un instance de tweet
+        $tweet = $tweetmanager->create();
 
         //on construit le formulaire
         $form = $this->createForm(TweetType::class, $tweet);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() AND $form->isValid() )
+        if ($form->isSubmitted() AND $form->isValid())
         {
-            //formulaire valide
-
-            //manager
-            $manager = $this->getDoctrine()->getManager();
+            //si le formulaire est valide
 
             //ajout du tweet à la bdd
-            $manager->persist($tweet);
-            $manager->flush();
+            $tweetmanager->save($tweet);
 
             //message de notification
             $this->addFlash(
                 'success',
                 'Votre tweet a bien été envoyé !'
             );
+
+            //on appel emailmessenger
+            $emailMessenger = $this->container->get('app.email_messenger');
+            //on envoie un mail
+            $emailMessenger->sendTweetCreated($tweet);
 
             //retourne vers detail tweet
             return $this->redirectToRoute('app_tweet_view',['id'=> $tweet->getId()]);
