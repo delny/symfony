@@ -1,7 +1,9 @@
 <?php
 // src/AppBundle/Manager/TweetManager.php
 namespace AppBundle\Manager;
+use AppBundle\Entity\Favourite;
 use AppBundle\Entity\Tweet;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 class TweetManager {
@@ -45,6 +47,15 @@ class TweetManager {
      */
     public function getLast()
     {
-        return $this->manager->getRepository(Tweet::class)->getLastTweets($this ->nbLastTweet);
+        return $this->manager->getRepository(Tweet::class)->getLastTweets($this->nbLastTweet);
+    }
+
+    /**
+     * @param User $user
+     * @return array
+     */
+    public function getFavouritesTweetsByUser(User $user)
+    {
+        return $this->manager->getRepository(Favourite::class)->getFavouritesTweetsByUser($user);
     }
 }

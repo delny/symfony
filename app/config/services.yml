@@ -16,3 +16,7 @@ services:
         class: AppBundle\Messenger\EmailMessenger
         arguments:
           - "@mailer"
+    app.user_manager:
+        class: AppBundle\Manager\UserManager
+        arguments:
+          - "@=service('doctrine').getManager()"

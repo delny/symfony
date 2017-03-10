@@ -2,6 +2,7 @@
 
 namespace AppBundle\Repository;
 use AppBundle\Entity\Tweet;
+use AppBundle\Entity\User;
 
 /**
  * TweetRepository
@@ -37,5 +38,20 @@ class TweetRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter(':id',$idTweet)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @param User $user
+     * @return array
+     */
+    public function getFavouritesTweetsByUser(User $user)
+    {
+        return $this->createQueryBuilder('t')
+            ->select('t.message, t.id, t.createdAt')
+            ->innerJoin('favourite as f ON f.tweet_id = t.id','alias')
+            ->andWhere('f.user = :iduser')
+            ->setParameter(':iduser',$user->getId())
+            ->getQuery()
+            ->getResult();
     }
 }
